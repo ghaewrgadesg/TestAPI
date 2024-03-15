@@ -1,12 +1,21 @@
 package com.example.demo.user;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.Period;
+
+@Entity
+@Table
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String email, name, username;
     private LocalDate DOB;
-
+    @Transient
+    private Integer age;
     public User(Long id, String email, String name, String username, LocalDate DOB) {
         this.id = id;
         this.email = email;
@@ -21,7 +30,8 @@ public class User {
         this.username = username;
         this.DOB = DOB;
     }
-
+    public User() {
+    }
     public Long getId() {
         return id;
     }
@@ -60,6 +70,14 @@ public class User {
 
     public void setDOB(LocalDate DOB) {
         this.DOB = DOB;
+    }
+
+    public Integer getAge() {
+        return Period.between(this.DOB, LocalDate.now()).getYears();
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     @Override
