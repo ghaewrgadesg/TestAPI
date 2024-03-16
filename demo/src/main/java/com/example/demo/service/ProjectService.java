@@ -43,6 +43,9 @@ public class ProjectService {
         if (!managerOptional.isPresent()){
             throw new IllegalStateException("email doesn't exist " + project.getManagerEmail());
         }
+        if (project.getEndDate().compareTo(LocalDate.now()) < 0){
+            throw new IllegalStateException("End Date can't be earlier than today");
+        }
         User manager = managerOptional.get();
         project.setManager(manager);
         project.setStartDate(LocalDate.now());
