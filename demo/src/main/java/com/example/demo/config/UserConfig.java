@@ -27,8 +27,13 @@ public class UserConfig {
                     "GorDoor200",
                     LocalDate.of(2001, Month.JUNE, 10)
             );
+            User Horus = new User("HorusPlsComeHome@gmail.com",
+                    "Horus Lightwing",
+                    "LightWingsShore",
+                    LocalDate.of(1000, Month.MARCH, 15)
+            );
             repository.saveAll(
-                    List.of(testMan, Gorlock)
+                    List.of(testMan, Gorlock, Horus)
             );
         };
     }

@@ -76,7 +76,7 @@ public class TaskService {
             throw new IllegalStateException("Task " + taskName + " for the project " + projectName +" doesn't exist");
         }
         Task task = taskOptional.get();
-//        this doesn't work because the ID is composed of name and project Name
+//        this doesn't work because the ID is composed of name and project Name but I'm leaving this here anyway
 //        if (newName != null && newName.length() > 0 &&
 //                !Objects.equals(task.getName(), newName)){
 //            taskOptional = taskRepository.findTaskByNameAndProject(newName, projectName);
