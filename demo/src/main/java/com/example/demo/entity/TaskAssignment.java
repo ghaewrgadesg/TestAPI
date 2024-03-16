@@ -2,12 +2,22 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 
+
+@IdClass(TaskAssignmentId.class)
 @Entity
 public class TaskAssignment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "member_task_name")//need to be different from the name column in task due to column mapping problems
+    private String taskName;
+    @Id
+    @Column(name = "member_email")
+    private String memberEmail;
+
+    @Id
+    @Column(name = "project_name")
+    private String projectName;
 
     @ManyToOne
     private Task task;
@@ -15,17 +25,45 @@ public class TaskAssignment {
     @ManyToOne
     private User user;
 
-    public TaskAssignment(Task task, User user) {
+    @ManyToOne
+    private Project project;
+
+    // Constructors, getters, and setters
+
+    public TaskAssignment(String taskName, String memberEmail, String projectName, Task task, User user, Project project) {
+        this.taskName = taskName;
+        this.memberEmail = memberEmail;
+        this.projectName = projectName;
         this.task = task;
         this.user = user;
+        this.project = project;
     }
 
-    public Long getId() {
-        return id;
+    public TaskAssignment() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getMemberEmail() {
+        return memberEmail;
+    }
+
+    public void setMemberEmail(String memberEmail) {
+        this.memberEmail = memberEmail;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public Task getTask() {
@@ -42,5 +80,13 @@ public class TaskAssignment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

@@ -44,6 +44,11 @@ public class TaskService {
         if (!projectOptional.isPresent()){
             throw new IllegalStateException("A project with the name " + task.getProjectName() +  " does not exist");
         }
+        Project project = projectOptional.get();
+        Optional<Task> taskOptional = taskRepository.findTaskByNameAndProject(task.getName(), project.getName());
+        if (taskOptional.isPresent()){
+            throw new IllegalStateException("A task with a similar name has already been assigned to this project");
+        }
         if (!eligibleStatus.contains(task.getStatus())){
             throw new IllegalStateException("Wrong Status value ('IN PROGRESS, FINISHED, NOT STARTED')");
         }
@@ -51,7 +56,6 @@ public class TaskService {
             throw new IllegalStateException("End Date can't be earlier than today");
         }
         //        Not entirely sure if adding the project
-        Project project = projectOptional.get();
         task.setProject(project);
         task.setStartDate(LocalDate.now());
         taskRepository.save(task);
@@ -64,7 +68,7 @@ public class TaskService {
         }
         Optional<Task> taskOptional = taskRepository.findTaskByNameAndProject(taskName, projectName);
         if (!taskOptional.isPresent()){
-            throw new IllegalStateException("Task " + taskName + " for the project " + projectName +" doesn't exist");
+            throw new IllegalStateException("Task '" + taskName + "' for the project '" + projectName +"' doesn't exist");
         }
         taskRepository.deleteTaskByNameAndProject(taskName, projectName);
     }
@@ -73,7 +77,7 @@ public class TaskService {
     public void updateTask(String projectName, String taskName, String newName,  String status, LocalDate endDate){
         Optional<Task> taskOptional = taskRepository.findTaskByNameAndProject(taskName, projectName);
         if (!taskOptional.isPresent()){
-            throw new IllegalStateException("Task " + taskName + " for the project " + projectName +" doesn't exist");
+            throw new IllegalStateException("Task '" + taskName + "' for the project '" + projectName +"' doesn't exist");
         }
         Task task = taskOptional.get();
 //        this doesn't work because the ID is composed of name and project Name but I'm leaving this here anyway

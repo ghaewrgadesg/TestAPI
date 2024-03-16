@@ -34,14 +34,19 @@ public class ProjectAssignmentService {
     public void addNewProjectAssignment(ProjectAssignment projectAssignment){
         Optional<Project> projectOptional = projectRepository.findProjectByName(projectAssignment.getProjectName());
         if (!projectOptional.isPresent()){
-            throw new IllegalStateException("A project with the name " + projectAssignment.getProjectName() +  " does not exist");
+            throw new IllegalStateException("A project with the name '" + projectAssignment.getProjectName() +  "' does not exist");
         }
         Project project = projectOptional.get();
         Optional<User> userOptional = userRepository.findUserByEmail(projectAssignment.getMemberEmail());
         if (!userOptional.isPresent()){
-            throw new IllegalStateException("A member with the email " + projectAssignment.getMemberEmail() +  " is already assigned to this project");
+            throw new IllegalStateException("A member with the email '" + projectAssignment.getMemberEmail() + "' does not exist");
         }
         User user = userOptional.get();
+        Optional<ProjectAssignment> projectAssignmentOptional= projectAssignmentRepository.findProjectAssignmentByEmailAndName(
+                user.getEmail(),project.getName());
+        if (projectAssignmentOptional.isPresent()){
+            throw new IllegalStateException("The member is already assigned to this project");
+        }
         projectAssignment.setProject(project);
         projectAssignment.setMember(user);
         projectAssignmentRepository.save(projectAssignment);

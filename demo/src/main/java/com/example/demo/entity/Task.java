@@ -11,11 +11,9 @@ import java.time.LocalDate;
 public class Task {
 
     @Id
-    @Column(name = "name")
     private String name;
 
     @Id
-    @Column(name = "project_name")
     private String projectName;
 
     private LocalDate startDate;
